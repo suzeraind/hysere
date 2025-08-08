@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import useWindowsStore from '../../store/useWindowsStore';
 import StartMenu from './StartMenu';
+import Clock from './Clock';
 
 const TaskbarContainer = styled.div`
   position: absolute;
@@ -16,6 +17,10 @@ const TaskbarContainer = styled.div`
   align-items: center;
   padding: 0 10px;
   z-index: 100000;
+`;
+
+const Spacer = styled.div`
+  flex-grow: 1;
 `;
 
 const StartButton = styled.button`
@@ -102,6 +107,8 @@ const Taskbar: React.FC = () => {
             <span>{window.app.title}</span>
           </TaskbarIcon>
         ))}
+        <Spacer />
+        <Clock />
       </TaskbarContainer>
       <div ref={startMenuRef}>
         {isStartMenuOpen && <StartMenu onClose={() => setStartMenuOpen(false)} />}
