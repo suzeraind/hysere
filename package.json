@@ -1,7 +1,9 @@
 {
   "name": "hysere",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "suzeraind",
   "type": "module",
   "scripts": {
     "dev": "vite",
