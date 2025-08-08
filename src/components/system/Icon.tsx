@@ -4,7 +4,7 @@ import { type App } from '../../types';
 
 interface IconProps {
   app: App;
-  onDoubleClick: (app: App) => void;
+  onDoubleClick: () => void;
 }
 
 const IconContainer = styled.div`
@@ -15,31 +15,24 @@ const IconContainer = styled.div`
   margin: 10px;
   cursor: pointer;
   text-align: center;
-  padding: 5px;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  
+  img {
+    width: 48px;
+    height: 48px;
   }
-`;
 
-const IconImage = styled.img`
-  width: 48px;
-  height: 48px;
-  margin-bottom: 5px;
-`;
-
-const IconLabel = styled.span`
-  color: #fff;
-  font-size: 12px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  span {
+    margin-top: 5px;
+    text-shadow: 1px 1px 2px black;
+  }
 `;
 
 const Icon: React.FC<IconProps> = ({ app, onDoubleClick }) => {
   return (
-    <IconContainer onDoubleClick={() => onDoubleClick(app)}>
-      <IconImage src={app.icon} alt={app.title} />
-      <IconLabel>{app.title}</IconLabel>
+    <IconContainer onDoubleClick={onDoubleClick}>
+      <img src={app.icon} alt={app.title} />
+      <span>{app.title}</span>
     </IconContainer>
   );
 };

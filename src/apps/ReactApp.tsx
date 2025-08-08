@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import reactLogo from '../assets/icons/react.svg';
 
 const LogoContainer = styled.div`
   display: flex;
@@ -17,7 +16,7 @@ const Logo = styled.img`
 const ReactApp: React.FC = () => {
   return (
     <LogoContainer>
-      <Logo src={reactLogo} alt="React Logo" />
+      <Logo src="/icons/react.svg" alt="React Logo" />
     </LogoContainer>
   );
 };
