@@ -8,8 +8,10 @@ const TaskbarContainer = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 40px;
-  background: #222;
+  height: 48px;
+  background: rgba(40, 44, 52, 0.75);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   padding: 0 10px;
@@ -17,34 +19,50 @@ const TaskbarContainer = styled.div`
 `;
 
 const StartButton = styled.button`
-  background: #444;
-  color: white;
+  background: var(--accent-color);
+  color: var(--primary-bg);
   border: none;
-  padding: 5px 15px;
-  border-radius: 3px;
+  padding: 8px 16px;
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: #88e1fc;
+  }
 `;
 
-const TaskbarIcon = styled.div`
+const TaskbarIcon = styled.div<{ isActive: boolean }>`
   display: flex;
   align-items: center;
-  padding: 5px;
-  margin: 0 5px;
-  background: #444;
-  color: white;
-  border-radius: 3px;
+  padding: 6px 12px;
+  margin: 0 4px;
+  background: ${({ isActive }) => (isActive ? 'rgba(97, 218, 251, 0.3)' : 'transparent')};
+  color: var(--text-color);
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 2px solid ${({ isActive }) => (isActive ? 'var(--accent-color)' : 'transparent')};
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 
   img {
     width: 24px;
     height: 24px;
-    margin-right: 5px;
+    margin-right: 8px;
+  }
+
+  span {
+    font-size: 14px;
   }
 `;
 
 const Taskbar: React.FC = () => {
-  const { windows, focusWindow } = useWindowsStore();
+  const { windows, focusWindow, focusedWindowId } = useWindowsStore();
   const [isStartMenuOpen, setStartMenuOpen] = useState(false);
   const startMenuRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +93,11 @@ const Taskbar: React.FC = () => {
       <TaskbarContainer>
         <StartButton onClick={toggleStartMenu}>Start</StartButton>
         {windows.map(window => (
-          <TaskbarIcon key={window.id} onClick={() => focusWindow(window.id)}>
+          <TaskbarIcon
+            key={window.id}
+            onClick={() => focusWindow(window.id)}
+            isActive={window.id === focusedWindowId}
+          >
             <img src={window.app.icon} alt={window.app.title} />
             <span>{window.app.title}</span>
           </TaskbarIcon>

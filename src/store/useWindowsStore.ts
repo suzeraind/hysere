@@ -3,6 +3,7 @@ import { type App, type WindowInstance } from '../types';
 
 interface WindowsStore {
   windows: WindowInstance[];
+  focusedWindowId: string | null;
   openWindow: (app: App) => void;
   closeWindow: (id: string) => void;
   focusWindow: (id: string) => void;
@@ -13,14 +14,17 @@ interface WindowsStore {
 
 const useWindowsStore = create<WindowsStore>((set) => ({
   windows: [],
+  focusedWindowId: null,
   openWindow: (app) =>
     set((state) => {
       const existingWindow = state.windows.find((w) => w.id === app.id);
+      const newZIndex = Math.max(...state.windows.map(w => w.zIndex), 0) + 1;
       if (existingWindow) {
         return {
           windows: state.windows.map((w) =>
-            w.id === app.id ? { ...w, isMinimized: false, zIndex: Math.max(...state.windows.map(w => w.zIndex), 0) + 1 } : w
+            w.id === app.id ? { ...w, isMinimized: false, zIndex: newZIndex } : w
           ),
+          focusedWindowId: app.id,
         };
       }
       return {
@@ -34,20 +38,23 @@ const useWindowsStore = create<WindowsStore>((set) => ({
             width: app.defaultSize?.width || 640,
             height: app.defaultSize?.height || 480,
             isMinimized: false,
-            zIndex: state.windows.length > 0 ? Math.max(...state.windows.map(w => w.zIndex), 0) + 1 : 1,
+            zIndex: newZIndex,
           },
         ],
+        focusedWindowId: app.id,
       };
     }),
   closeWindow: (id) =>
     set((state) => ({
       windows: state.windows.filter((w) => w.id !== id),
+      focusedWindowId: state.focusedWindowId === id ? null : state.focusedWindowId,
     })),
   focusWindow: (id) =>
     set((state) => ({
       windows: state.windows.map((w) =>
         w.id === id ? { ...w, zIndex: Math.max(...state.windows.map(w => w.zIndex), 0) + 1 } : w
       ),
+      focusedWindowId: id,
     })),
   minimizeWindow: (id) =>
     set((state) => ({

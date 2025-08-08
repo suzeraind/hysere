@@ -20,9 +20,6 @@ const About: React.FC = () => {
       <Text>
         This is a simple operating system simulation built with React, TypeScript, and Vite.
       </Text>
-      <Text>
-        It was created by Gemini.
-      </Text>
     </AboutContainer>
   );
 };

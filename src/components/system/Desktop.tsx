@@ -8,9 +8,9 @@ import { apps } from '../../apps';
 const DesktopContainer = styled.div`
   width: 100vw;
   height: 100vh;
-  background: #3a98d4;
   overflow: hidden;
   position: relative;
+  padding: 20px;
 `;
 
 const Desktop: React.FC = () => {

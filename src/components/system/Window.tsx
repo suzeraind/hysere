@@ -9,30 +9,59 @@ interface WindowProps {
 }
 
 const WindowContainer = styled.div`
-  border: 1px solid #ccc;
-  background: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const TitleBar = styled.div`
-  height: 30px;
-  background: #eee;
+  height: 36px;
+  background: var(--primary-bg);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 0 12px;
   cursor: move;
   flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+`;
+
+const Title = styled.span`
+  font-weight: 500;
+  font-size: 14px;
+`;
+
+const CloseButton = styled.button`
+  background: #ff5f56;
+  border: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b0000;
+  font-size: 8px;
+  line-height: 0;
+
+  &:hover {
+    background: #e0443e;
+  }
 `;
 
 const Content = styled.div`
-  padding: 10px;
+  padding: 16px;
   flex-grow: 1;
   overflow: auto;
+  background: var(--secondary-bg);
 `;
 
 const Window: React.FC<WindowProps> = ({ window }) => {
@@ -63,8 +92,8 @@ const Window: React.FC<WindowProps> = ({ window }) => {
     >
       <WindowContainer>
         <TitleBar className="title-bar">
-          <span>{window.app.title}</span>
-          <button onClick={() => closeWindow(window.id)}>X</button>
+          <Title>{window.app.title}</Title>
+          <CloseButton onClick={() => closeWindow(window.id)} />
         </TitleBar>
         <Content>
           <AppContent />
