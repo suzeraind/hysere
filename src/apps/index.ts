@@ -5,6 +5,7 @@ import ViteApp from './ViteApp';
 import ReactApp from './ReactApp';
 
 export const apps: App[] = [
+
   {
     id: 'about',
     title: 'About',

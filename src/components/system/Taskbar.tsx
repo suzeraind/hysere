@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import useWindowsStore from '../../store/useWindowsStore';
 import StartMenu from './StartMenu';
 import Clock from './Clock';
+import ClockWidget from './ClockWidget';
 
 const TaskbarContainer = styled.div`
   position: absolute;
@@ -69,29 +70,35 @@ const TaskbarIcon = styled.div<{ isActive: boolean }>`
 const Taskbar: React.FC = () => {
   const { windows, focusWindow, focusedWindowId } = useWindowsStore();
   const [isStartMenuOpen, setStartMenuOpen] = useState(false);
+  const [isClockWidgetOpen, setClockWidgetOpen] = useState(false);
   const startMenuRef = useRef<HTMLDivElement>(null);
+  const clockWidgetRef = useRef<HTMLDivElement>(null);
 
   const toggleStartMenu = () => {
     setStartMenuOpen(!isStartMenuOpen);
+    setClockWidgetOpen(false); // Close clock widget if start menu opens
+  };
+
+  const toggleClockWidget = () => {
+    setClockWidgetOpen(!isClockWidgetOpen);
+    setStartMenuOpen(false); // Close start menu if clock widget opens
   };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (startMenuRef.current && !startMenuRef.current.contains(event.target as Node)) {
       setStartMenuOpen(false);
     }
+    if (clockWidgetRef.current && !clockWidgetRef.current.contains(event.target as Node)) {
+      setClockWidgetOpen(false);
+    }
   };
 
   useEffect(() => {
-    if (isStartMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isStartMenuOpen]);
+  }, []);
 
   return (
     <>
@@ -108,13 +115,27 @@ const Taskbar: React.FC = () => {
           </TaskbarIcon>
         ))}
         <Spacer />
-        <Clock />
+        <div onClick={toggleClockWidget} style={{ cursor: 'pointer' }}>
+          <Clock />
+        </div>
       </TaskbarContainer>
       <div ref={startMenuRef}>
         {isStartMenuOpen && <StartMenu onClose={() => setStartMenuOpen(false)} />}
       </div>
+      {isClockWidgetOpen && (
+        <ClockWidgetContainer ref={clockWidgetRef}>
+          <ClockWidget />
+        </ClockWidgetContainer>
+      )}
     </>
   );
 };
+
+const ClockWidgetContainer = styled.div`
+  position: absolute;
+  bottom: 50px; /* Above the taskbar */
+  right: 10px;
+  z-index: 99999;
+`;
 
 export default Taskbar;
