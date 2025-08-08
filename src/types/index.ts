@@ -19,3 +19,8 @@ export interface WindowInstance {
   zIndex: number;
   isMinimized: boolean;
 }
+
+export interface IconPosition {
+  x: number;
+  y: number;
+}

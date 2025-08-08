@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { type App } from '../../types';
+import { Rnd } from 'react-rnd';
+import { type App, type IconPosition } from '../../types';
 
 interface IconProps {
   app: App;
   onDoubleClick: () => void;
+  position: IconPosition;
+  onDragStop: (id: string, x: number, y: number) => void;
 }
 
 const IconContainer = styled.div`
@@ -19,6 +22,8 @@ const IconContainer = styled.div`
   color: var(--text-color);
   border-radius: 5px;
   transition: background-color 0.2s ease;
+  user-select: none; 
+  -webkit-user-drag: none; 
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -28,6 +33,8 @@ const IconContainer = styled.div`
     width: 48px;
     height: 48px;
     margin-bottom: 8px;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   span {
@@ -37,12 +44,20 @@ const IconContainer = styled.div`
   }
 `;
 
-const Icon: React.FC<IconProps> = ({ app, onDoubleClick }) => {
+const Icon: React.FC<IconProps> = ({ app, onDoubleClick, position, onDragStop }) => {
   return (
-    <IconContainer onDoubleClick={onDoubleClick}>
-      <img src={app.icon} alt={app.title} />
-      <span>{app.title}</span>
-    </IconContainer>
+    <Rnd
+      size={{ width: 90, height: 90 }} // Icon size
+      position={{ x: position.x, y: position.y }}
+      onDragStop={(_, d) => onDragStop(app.id, d.x, d.y)}
+      enableResizing={false}
+      bounds="parent"
+    >
+      <IconContainer onDoubleClick={onDoubleClick}>
+        <img src={app.icon} alt={app.title} />
+        <span>{app.title}</span>
+      </IconContainer>
+    </Rnd>
   );
 };
 

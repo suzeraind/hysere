@@ -1,20 +1,34 @@
 import { create } from 'zustand';
-import { type App, type WindowInstance } from '../types';
+import { type App, type WindowInstance, type IconPosition } from '../types';
+import { apps } from '../apps';
 
 interface WindowsStore {
   windows: WindowInstance[];
   focusedWindowId: string | null;
+  iconPositions: Record<string, IconPosition>;
   openWindow: (app: App) => void;
   closeWindow: (id: string) => void;
   focusWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
   updateWindowPosition: (id: string, x: number, y: number) => void;
   updateWindowSize: (id: string, width: number, height: number) => void;
+  updateIconPosition: (id: string, x: number, y: number) => void;
 }
 
-const useWindowsStore = create<WindowsStore>((set) => ({
+const GRID_SIZE = 100; // Consistent grid size
+
+const initialIconPositions: Record<string, IconPosition> = {};
+apps.forEach((app, index) => {
+  initialIconPositions[app.id] = {
+    x: (index % 8) * GRID_SIZE,
+    y: Math.floor(index / 8) * GRID_SIZE,
+  };
+});
+
+const useWindowsStore = create<WindowsStore>((set, get) => ({
   windows: [],
   focusedWindowId: null,
+  iconPositions: initialIconPositions,
   openWindow: (app) =>
     set((state) => {
       const existingWindow = state.windows.find((w) => w.id === app.id);
@@ -68,12 +82,30 @@ const useWindowsStore = create<WindowsStore>((set) => ({
         w.id === id ? { ...w, x, y } : w
       ),
     })),
-    updateWindowSize: (id, width, height) =>
+  updateWindowSize: (id, width, height) =>
     set((state) => ({
       windows: state.windows.map((w) =>
         w.id === id ? { ...w, width, height } : w
       ),
     })),
+  updateIconPosition: (id, x, y) =>
+    set(() => {
+      const currentPositions = get().iconPositions;
+      const isOccupied = Object.entries(currentPositions).some(
+        ([iconId, pos]) => iconId !== id && pos.x === x && pos.y === y
+      );
+
+      if (isOccupied) {
+        return {};
+      }
+
+      return {
+        iconPositions: {
+          ...currentPositions,
+          [id]: { x, y },
+        },
+      };
+    }),
 }));
 
 export default useWindowsStore;

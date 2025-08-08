@@ -14,12 +14,26 @@ const DesktopContainer = styled.div`
 `;
 
 const Desktop: React.FC = () => {
-  const { windows, openWindow } = useWindowsStore();
+  const { windows, openWindow, iconPositions, updateIconPosition } = useWindowsStore();
+
+  const GRID_SIZE = 100; // Define your grid size
+
+  const handleIconDragStop = (id: string, x: number, y: number) => {
+    const snappedX = Math.round(x / GRID_SIZE) * GRID_SIZE;
+    const snappedY = Math.round(y / GRID_SIZE) * GRID_SIZE;
+    updateIconPosition(id, snappedX, snappedY);
+  };
 
   return (
     <DesktopContainer>
       {apps.map(app => (
-        <Icon key={app.id} app={app} onDoubleClick={() => openWindow(app)} />
+        <Icon
+          key={app.id}
+          app={app}
+          onDoubleClick={() => openWindow(app)}
+          position={iconPositions[app.id]}
+          onDragStop={handleIconDragStop}
+        />
       ))}
       {windows.map((window) => (
         <Window key={window.id} window={window} />

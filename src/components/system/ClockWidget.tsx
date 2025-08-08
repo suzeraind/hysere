@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const ClockWidgetContainer = styled.div`
   padding: 25px 30px;
-  background: var(--window-bg);
+  background: var(--secondary-bg);
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   text-align: center;
