@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Rnd } from 'react-rnd';
 import useWindowsStore from '../../store/useWindowsStore';
-import { WindowInstance } from '../../types';
+import type { WindowInstance } from '../../types';
 
 interface WindowProps {
   window: WindowInstance;
@@ -49,10 +49,10 @@ const Window: React.FC<WindowProps> = ({ window }) => {
     <Rnd
       size={{ width: window.width, height: window.height }}
       position={{ x: window.x, y: window.y }}
-      onDragStop={(e, d) => {
+      onDragStop={(_e, d) => {
         updateWindowPosition(window.id, d.x, d.y);
       }}
-      onResizeStop={(e, direction, ref) => {
+      onResizeStop={(_e, _direction, ref) => {
         updateWindowSize(window.id, parseInt(ref.style.width, 10), parseInt(ref.style.height, 10));
       }}
       onMouseDown={() => focusWindow(window.id)}
