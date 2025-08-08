@@ -40,7 +40,7 @@ const StartButton = styled.button`
   }
 `;
 
-const TaskbarIcon = styled.div<{ isActive: boolean }>`
+const TaskbarIcon = styled.div<{ isActive: boolean; }>`
   display: flex;
   align-items: center;
   padding: 6px 12px;
@@ -65,6 +65,13 @@ const TaskbarIcon = styled.div<{ isActive: boolean }>`
   span {
     font-size: 14px;
   }
+`;
+
+const ClockWidgetContainer = styled.div`
+  position: absolute;
+  bottom: 50px; 
+  right: 10px;
+  z-index: 1000;
 `;
 
 const Taskbar: React.FC = () => {
@@ -130,12 +137,5 @@ const Taskbar: React.FC = () => {
     </>
   );
 };
-
-const ClockWidgetContainer = styled.div`
-  position: absolute;
-  bottom: 50px; /* Above the taskbar */
-  right: 10px;
-  z-index: 99999;
-`;
 
 export default Taskbar;
