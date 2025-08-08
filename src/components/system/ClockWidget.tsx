@@ -81,9 +81,10 @@ const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
+  min-height: 240px;
 `;
 
-const CalendarDay = styled.div<{ isCurrentMonth: boolean; isToday: boolean }>`
+const CalendarDay = styled.div<{ isCurrentMonth: boolean; isToday: boolean; }>`
   padding: 8px 0;
   text-align: center;
   border-radius: 5px;
@@ -119,20 +120,21 @@ const ClockWidget: React.FC = () => {
     const firstDayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
     const numDaysInMonth = lastDayOfMonth.getDate();
-    const firstDayOfWeek = firstDayOfMonth.getDay(); // 0 for Sunday, 1 for Monday, etc.
+    const firstDayOfWeek = firstDayOfMonth.getDay();
 
     const days = [];
 
-    // Fill leading empty cells
     for (let i = 0; i < firstDayOfWeek; i++) {
       days.push(null);
     }
 
-    // Fill days of the month
     for (let i = 1; i <= numDaysInMonth; i++) {
       days.push(i);
     }
 
+    while (days.length < 42) {
+      days.push(null);
+    }
     return days;
   };
 
