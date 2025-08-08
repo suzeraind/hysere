@@ -15,7 +15,7 @@ interface WindowsStore {
   updateIconPosition: (id: string, x: number, y: number) => void;
 }
 
-const GRID_SIZE = 100; // Consistent grid size
+const GRID_SIZE = 100;
 
 const initialIconPositions: Record<string, IconPosition> = {};
 apps.forEach((app, index) => {

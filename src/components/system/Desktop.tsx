@@ -16,7 +16,7 @@ const DesktopContainer = styled.div`
 const Desktop: React.FC = () => {
   const { windows, openWindow, iconPositions, updateIconPosition } = useWindowsStore();
 
-  const GRID_SIZE = 100; // Define your grid size
+  const GRID_SIZE = 100;
 
   const handleIconDragStop = (id: string, x: number, y: number) => {
     const snappedX = Math.round(x / GRID_SIZE) * GRID_SIZE;

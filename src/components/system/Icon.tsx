@@ -47,7 +47,7 @@ const IconContainer = styled.div`
 const Icon: React.FC<IconProps> = ({ app, onDoubleClick, position, onDragStop }) => {
   return (
     <Rnd
-      size={{ width: 90, height: 90 }} // Icon size
+      size={{ width: 90, height: 90 }}
       position={{ x: position.x, y: position.y }}
       onDragStop={(_, d) => onDragStop(app.id, d.x, d.y)}
       enableResizing={false}

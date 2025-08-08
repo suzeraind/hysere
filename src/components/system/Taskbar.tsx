@@ -17,7 +17,7 @@ const TaskbarContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 0 10px;
-  z-index: 100000;
+  z-index: 1000;
 `;
 
 const Spacer = styled.div`
@@ -76,12 +76,12 @@ const Taskbar: React.FC = () => {
 
   const toggleStartMenu = () => {
     setStartMenuOpen(!isStartMenuOpen);
-    setClockWidgetOpen(false); // Close clock widget if start menu opens
+    setClockWidgetOpen(false);
   };
 
   const toggleClockWidget = () => {
     setClockWidgetOpen(!isClockWidgetOpen);
-    setStartMenuOpen(false); // Close start menu if clock widget opens
+    setStartMenuOpen(false);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
